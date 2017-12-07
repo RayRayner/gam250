@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 //using System;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Windows;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class MapGen : MonoBehaviour
 {
@@ -67,7 +69,7 @@ public class MapGen : MonoBehaviour
 
         //       AssetDatabase.CreateFolder("Assets/Temp/", "Folder" + CaptureNo++);
         //       AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/Folder" + CaptureNo + "/Heightmap.asset");
-        AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/Heightmap.asset");
+        AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/" + System.DateTime.Now.ToFileTime() + ".asset");
         AssetDatabase.SaveAssets();
         
     }
@@ -112,13 +114,22 @@ public class MapGen : MonoBehaviour
     void ImageToFloat (float[,] imgMap, int tileX, int tileZ)
     {
 
-        var imgByte = PredefinedMap.GetRawTextureData();
+      //  PredefinedMap.filterMode = FilterMode.Point;
 
         for (int x = 0; x < heightMapSize; x++)
         {
             for (int z = 0; z < heightMapSize; z++)
             {
-               
+                var Colour2 = PredefinedMap.GetPixels();
+                //           float Useless1;
+                //         float Useless2;
+                //       float Useful;
+                //     var Colour = PredefinedMap.GetPixel(z, x);
+                //   Color.RGBToHSV(Colour,out Useless1,out Useless2, out Useful);
+                // imgMap[z,x] = (int)Useful;
+
+                //imgMap[z, x] = Colour2[z + x].grayscale;
+//                Debug.Log(imgMap[z, x]);
             }
         }
     }
@@ -229,15 +240,16 @@ public class MapGen : MonoBehaviour
     {
         if (seed == 0)
         {
-            seed = Random.Range(1, 100000);
+            seed = UnityEngine.Random.Range(1, 100000);
         }
-        scale = Random.Range((int)ScaleMin, (int)ScaleMax);
+        scale = UnityEngine.Random.Range((int)ScaleMin, (int)ScaleMax);
 
         heightMapSize = Mathf.ClosestPowerOfTwo(heightMapSize) + 1;
         float[,] htMap = new float[heightMapSize, heightMapSize];
         float[,] bmMap = new float[heightMapSize, heightMapSize];
         float[,] fnlMap = new float[heightMapSize, heightMapSize];
- //       float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
+        // float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
+        float[,] imageMap = new float[heightMapSize, heightMapSize];
 
         Ter = new Terrain[tileX, tileZ];
 
@@ -256,7 +268,7 @@ public class MapGen : MonoBehaviour
 
                 FillHeights(htMap, x, z);
                 BiomeMap(bmMap, x, z);
-  //              ImageToFloat(imageMap, x, z);
+   //             ImageToFloat(imageMap, x, z);
   //              FindDifference(htMap, bmMap);
 
                 TerrainData tData = new TerrainData();
@@ -265,7 +277,7 @@ public class MapGen : MonoBehaviour
                 tData.name = "PCGTerrainData";
                 if (toolModeInt == 1)
                 {
-                    //                  tData.SetHeights(0, 0,imageMap);
+      //              tData.SetHeights(0, 0,imageMap);
                     Debug.Log("Tool Mode Int = " + toolModeInt);
                 } else
                 {
