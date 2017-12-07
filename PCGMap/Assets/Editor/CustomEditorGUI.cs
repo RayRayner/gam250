@@ -51,7 +51,7 @@ namespace GUIFunctionality
                             mappy.MaxHeight = EditorGUILayout.Slider(mappy.MaxHeight, 0f, 100f);
                             EditorGUILayout.EndHorizontal();
 
-                            
+
                             /*
                             EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.PrefixLabel("Scale Min");
@@ -71,29 +71,51 @@ namespace GUIFunctionality
                             */
 
                             EditorGUILayout.BeginHorizontal();
+                            //mappy.scale = Random.Range(mappy.ScaleMin, mappy.ScaleMax);
+                            EditorGUILayout.LabelField("Scale is Random between " + Mathf.FloorToInt(mappy.ScaleMin) + " and " + Mathf.FloorToInt(mappy.ScaleMax) + " (Roughly)");
+                            EditorGUILayout.EndHorizontal();
+
+                            EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.MinMaxSlider(ref mappy.ScaleMin, ref mappy.ScaleMax, MinLimit, MaxLimit);
                             EditorGUILayout.EndHorizontal();
                             
 
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField("Scale Max = " + Mathf.FloorToInt(mappy.ScaleMax));
-                            EditorGUILayout.EndHorizontal();
+                          //  EditorGUILayout.BeginHorizontal();
+                          //  EditorGUILayout.LabelField("Scale Max = " + Mathf.FloorToInt(mappy.ScaleMax));
+                          //  EditorGUILayout.EndHorizontal();
 
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField("Scale Min = " + Mathf.FloorToInt(mappy.ScaleMin));
-                            EditorGUILayout.EndHorizontal();
+                          //  EditorGUILayout.BeginHorizontal();
+                          //  EditorGUILayout.LabelField("Scale Min = " + Mathf.FloorToInt(mappy.ScaleMin));
+                          //  EditorGUILayout.EndHorizontal();
                            
-                            EditorGUILayout.BeginHorizontal();
-                          //mappy.scale = Random.Range(mappy.ScaleMin, mappy.ScaleMax);
-                            EditorGUILayout.LabelField("Scale = " + Mathf.FloorToInt(mappy.scale));
-                            EditorGUILayout.EndHorizontal();
+                            
 
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Seed");
+                            EditorGUILayout.PrefixLabel(new GUIContent("Seed", "If this is Zero, seed will be random"));
                             mappy.seed = EditorGUILayout.IntField(mappy.seed);
                             EditorGUILayout.EndHorizontal();
 
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
+                            mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
+                            EditorGUILayout.EndHorizontal();
+
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel("Amount of tiles (Z Axis)");
+                            mappy.tileZ = EditorGUILayout.IntField(mappy.tileZ);
+                            EditorGUILayout.EndHorizontal();
+
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
+                            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 513);
+                            EditorGUILayout.EndHorizontal();
+
+                            /*
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel("Temp");
+                            EditorGUILayout.EndHorizontal();
+                            */
                             break;
 
                         case 1:
@@ -105,23 +127,23 @@ namespace GUIFunctionality
                             */
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
+                            mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.ObjectField("Splat 1", mappy.splat1, typeof(Texture2D), false);
+                            mappy.splat1 = (Texture2D)EditorGUILayout.ObjectField("Splat 1", mappy.splat1, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.ObjectField("Detail 0", mappy.detail0, typeof(Texture2D), false);
+                            mappy.detail0 = (Texture2D)EditorGUILayout.ObjectField("Detail 0", mappy.detail0, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.ObjectField("Detail 1", mappy.detail1, typeof(Texture2D), false);
+                            mappy.detail1 = (Texture2D)EditorGUILayout.ObjectField("Detail 1", mappy.detail1, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.ObjectField("Detail 2", mappy.detail2, typeof(Texture2D), false);
+                            mappy.detail2 = (Texture2D)EditorGUILayout.ObjectField("Detail 2", mappy.detail2, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
 
                             break;
@@ -146,8 +168,12 @@ namespace GUIFunctionality
                     break;
 
                 case 1:
-
                     
+                    
+                    
+                            EditorGUILayout.BeginHorizontal();
+                            mappy.PredefinedMap = (Texture2D)EditorGUILayout.ObjectField("Map To Use", mappy.PredefinedMap, typeof(Texture2D), false);
+                            EditorGUILayout.EndHorizontal();
 
                     break;
                 

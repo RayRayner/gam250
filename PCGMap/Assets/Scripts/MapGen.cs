@@ -13,6 +13,7 @@ public class MapGen : MonoBehaviour
 
     public int toolModeInt = 0;
     public int optionsInt = 0;
+    public int pictureInt = 0;
 
     private int CaptureNo = 0;
 
@@ -110,15 +111,16 @@ public class MapGen : MonoBehaviour
 
     void ImageToFloat (float[,] imgMap, int tileX, int tileZ)
     {
+
+        var imgByte = PredefinedMap.GetRawTextureData();
+
         for (int x = 0; x < heightMapSize; x++)
         {
             for (int z = 0; z < heightMapSize; z++)
             {
-                //imgMap[z, x] = PredefinedMap.GetPixelBilinear(z,x) ;
-                //imgMap[z, x] = PredefinedMap.GetPixel(x,z).grayscale;   
+               
             }
         }
- //       Debug.Log(imgMap.Length);
     }
 
     void BiomeMap (float[,] htMap2, int tileX, int tileZ)
@@ -225,9 +227,10 @@ public class MapGen : MonoBehaviour
     //Runs at the start
     private void Start()
     {
-
-        //seed = Random.Range(1, 100000);
-
+        if (seed == 0)
+        {
+            seed = Random.Range(1, 100000);
+        }
         scale = Random.Range((int)ScaleMin, (int)ScaleMax);
 
         heightMapSize = Mathf.ClosestPowerOfTwo(heightMapSize) + 1;
