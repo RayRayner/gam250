@@ -8,9 +8,6 @@ namespace GUIFunctionality
     [CustomEditor(typeof(MapGen))]
     public class CustomEditorGUI : Editor
     {
-
-        float MinValue = 0;
-        float MaxVaulue = 100;
         float MinLimit = 0;
         float MaxLimit = 200;
 
@@ -156,20 +153,6 @@ namespace GUIFunctionality
                             EditorGUILayout.EndHorizontal();
 
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField("Scale is Random between " + Mathf.FloorToInt(mappy.ScaleMin) + " and " + Mathf.FloorToInt(mappy.ScaleMax) + " (Roughly)");
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.MinMaxSlider(ref mappy.ScaleMin, ref mappy.ScaleMax, MinLimit, MaxLimit);
-                            EditorGUILayout.EndHorizontal();
-
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel(new GUIContent("Seed", "If this is Zero, seed will be random"));
-                            mappy.seed = EditorGUILayout.IntField(mappy.seed);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
                             mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
                             EditorGUILayout.EndHorizontal();
@@ -181,7 +164,7 @@ namespace GUIFunctionality
 
                             EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
-                            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 513);
+                            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 512);
                             EditorGUILayout.EndHorizontal();
 
                             break;

@@ -99,9 +99,7 @@
     <Compile Include="Assets\STOLEN_RESOURCES\TerrainToolkit\com\heparo\terrain\toolkit\scripts\TerrainToolkit.cs" />
     <Compile Include="Assets\Scripts\CustomEditorHeaders.cs" />
     <Compile Include="Assets\Scripts\MapGen.cs" />
-    <Compile Include="Assets\Scripts\MapGenOLD.cs" />
     <Compile Include="Assets\Scripts\OwnPerlin.cs" />
-    <Compile Include="Assets\Scripts\TerDat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\STOLEN_RESOURCES\TerrainToolkit\com\heparo\terrain\toolkit\documentation\ReadMe2017.txt" />

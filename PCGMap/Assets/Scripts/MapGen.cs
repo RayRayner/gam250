@@ -17,7 +17,6 @@ public class MapGen : MonoBehaviour
     public int optionsInt = 0;
     public int pictureInt = 0;
 
-    private int CaptureNo = 0;
 
     private float[,] FinalMap;
 
@@ -114,24 +113,19 @@ public class MapGen : MonoBehaviour
     void ImageToFloat (float[,] imgMap, int tileX, int tileZ)
     {
 
-      //  PredefinedMap.filterMode = FilterMode.Point;
-
-        for (int x = 0; x < heightMapSize; x++)
+        //  PredefinedMap.filterMode = FilterMode.Point;
+   //     PredefinedMap.width = heightMapSize;
+     //   PredefinedMap.height = heightMapSize;
+        for (int x = 0; x < PredefinedMap.width; x++)
         {
-            for (int z = 0; z < heightMapSize; z++)
+            for (int z = 0; z < PredefinedMap.height; z++)
             {
-                var Colour2 = PredefinedMap.GetPixels();
-                //           float Useless1;
-                //         float Useless2;
-                //       float Useful;
-                //     var Colour = PredefinedMap.GetPixel(z, x);
-                //   Color.RGBToHSV(Colour,out Useless1,out Useless2, out Useful);
-                // imgMap[z,x] = (int)Useful;
-
-                //imgMap[z, x] = Colour2[z + x].grayscale;
-//                Debug.Log(imgMap[z, x]);
+                PredefinedMap.filterMode = FilterMode.Point;
+                var Colour = PredefinedMap.GetPixels( z, x, PredefinedMap.width, PredefinedMap.height);
+                imgMap[z, x] = Colour[x + z].grayscale;
             }
         }
+        print("Finished Image Map");
     }
 
     void BiomeMap (float[,] htMap2, int tileX, int tileZ)
@@ -247,16 +241,13 @@ public class MapGen : MonoBehaviour
         heightMapSize = Mathf.ClosestPowerOfTwo(heightMapSize) + 1;
         float[,] htMap = new float[heightMapSize, heightMapSize];
         float[,] bmMap = new float[heightMapSize, heightMapSize];
-        float[,] fnlMap = new float[heightMapSize, heightMapSize];
-        // float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
-        float[,] imageMap = new float[heightMapSize, heightMapSize];
+//        float[,] fnlMap = new float[heightMapSize, heightMapSize];
+         float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
+        //float[,] imageMap = new float[heightMapSize, heightMapSize];
 
         Ter = new Terrain[tileX, tileZ];
 
         Prototypes();
-
-        Debug.Log(htMap.Length);
-        Debug.Log(bmMap.Length);
 
 
         Debug.Log("Beginning Start loop");
@@ -268,7 +259,7 @@ public class MapGen : MonoBehaviour
 
                 FillHeights(htMap, x, z);
                 BiomeMap(bmMap, x, z);
-   //             ImageToFloat(imageMap, x, z);
+                ImageToFloat(imageMap, x, z);
   //              FindDifference(htMap, bmMap);
 
                 TerrainData tData = new TerrainData();
@@ -277,9 +268,10 @@ public class MapGen : MonoBehaviour
                 tData.name = "PCGTerrainData";
                 if (toolModeInt == 1)
                 {
-      //              tData.SetHeights(0, 0,imageMap);
+                    tData.SetHeights(0, 0,imageMap);
                     Debug.Log("Tool Mode Int = " + toolModeInt);
-                } else
+                }
+                else
                 {
                     Debug.Log("Tool Mode Int = " + toolModeInt);
                     tData.SetHeights(0, 0, htMap);
