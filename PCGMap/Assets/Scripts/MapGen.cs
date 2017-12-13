@@ -28,11 +28,13 @@ public class MapGen : MonoBehaviour
     public float MaxHeight;
     public float scale;
 
-    [CustomEditorHeaders("Scale for Perlin Noise", 20, 99, 11, 158, 1)]
+    [CustomEditorHeaders("Variables for Perlin Noise", 20, 99, 11, 158, 1)]
     [Range(1,100)]
     public float ScaleMin;
     [Range(1, 100)]
     public float ScaleMax;
+
+    public int octaves = 10;
 
     //Prototypes
     SplatPrototype[] splats;
@@ -61,18 +63,13 @@ public class MapGen : MonoBehaviour
     public bool UsePredefinedMap;
     public Texture2D PredefinedMap;
 
-
+    //Saving the perlin noise map
     public void SaveTexture()
     {
-
-
-        //       AssetDatabase.CreateFolder("Assets/Temp/", "Folder" + CaptureNo++);
-        //       AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/Folder" + CaptureNo + "/Heightmap.asset");
         AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/" + System.DateTime.Now.ToFileTime() + ".asset");
-        AssetDatabase.SaveAssets();
-        
+        AssetDatabase.SaveAssets();        
     }
-
+    //Creating various prototypes (needed)
     void Prototypes ()
     {
         splats = new SplatPrototype[2];
@@ -149,7 +146,7 @@ public class MapGen : MonoBehaviour
         Debug.Log("Heights 2 Done");
     }
 
-    void FillHeights(float[,] htMap, int tileX, int tileZ)
+    void FillHeights(float[,] htMap, int tileX, int tileZ, int octaves)
     {
         HeightMapTexture = new Texture2D(heightMapSize, heightMapSize);
         float ratio = (float)terrainSize / (float)heightMapSize;
@@ -158,13 +155,15 @@ public class MapGen : MonoBehaviour
         {
             for (int z = 0; z < heightMapSize; z++)
             {
-                float worldPosX = (x + tileX * (heightMapSize - 1) * ratio);
-                float worldPosZ = (z + tileZ * (heightMapSize - 1) * ratio);
+                for (int i = 0; i < octaves; i++)
+                {
+                    float worldPosX = (x + tileX * (heightMapSize - 1) * ratio);
+                    float worldPosZ = (z + tileZ * (heightMapSize - 1) * ratio);
 
-                htMap[z, x] = Mathf.PerlinNoise(worldPosX /scale + seed , worldPosZ /scale + seed);
-                Color color = CalculateColor(x, z);
-                HeightMapTexture.SetPixel((int)worldPosX, (int)worldPosZ, color);
-
+                    htMap[z, x] = Mathf.PerlinNoise(worldPosX / scale + seed, worldPosZ / scale + seed);
+                    Color color = CalculateColor(x, z);
+                    HeightMapTexture.SetPixel((int)worldPosX, (int)worldPosZ, color);
+                }
             }
         }
         HeightMapTexture.Apply();
@@ -257,9 +256,9 @@ public class MapGen : MonoBehaviour
             for (int z = 0; z < tileZ; z++)
             {
 
-                FillHeights(htMap, x, z);
+                FillHeights(htMap, x, z, octaves);
                 BiomeMap(bmMap, x, z);
-                ImageToFloat(imageMap, x, z);
+               // ImageToFloat(imageMap, x, z);
   //              FindDifference(htMap, bmMap);
 
                 TerrainData tData = new TerrainData();
@@ -268,12 +267,12 @@ public class MapGen : MonoBehaviour
                 tData.name = "PCGTerrainData";
                 if (toolModeInt == 1)
                 {
-                    tData.SetHeights(0, 0,imageMap);
-                    Debug.Log("Tool Mode Int = " + toolModeInt);
+                  //  tData.SetHeights(0, 0,imageMap);
+                  //  Debug.Log("Tool Mode Int = " + toolModeInt);
                 }
                 else
                 {
-                    Debug.Log("Tool Mode Int = " + toolModeInt);
+                //    Debug.Log("Tool Mode Int = " + toolModeInt);
                     tData.SetHeights(0, 0, htMap);
                 }
 

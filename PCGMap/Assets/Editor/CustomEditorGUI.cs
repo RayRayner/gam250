@@ -62,6 +62,13 @@ namespace GUIFunctionality
                             mappy.seed = EditorGUILayout.IntField(mappy.seed);
                             EditorGUILayout.EndHorizontal();
 
+                            
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel("Octaves");
+                            mappy.octaves = EditorGUILayout.IntSlider(mappy.octaves, 0, 100);
+                            EditorGUILayout.EndHorizontal();
+
+
                             EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
                             mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
@@ -76,6 +83,7 @@ namespace GUIFunctionality
                             EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
                             mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 513);
                             EditorGUILayout.EndHorizontal();
+
 
                             /*
                             EditorGUILayout.BeginHorizontal();
