@@ -146,10 +146,14 @@ public class MapGen : MonoBehaviour
         Debug.Log("Heights 2 Done");
     }
 
-    void FillHeights(float[,] htMap, int tileX, int tileZ, int octaves)
+    void FillHeights(float[,] htMap, int tileX, int tileZ, int octaves, float persistance, float lacunarity)
     {
         HeightMapTexture = new Texture2D(heightMapSize, heightMapSize);
         float ratio = (float)terrainSize / (float)heightMapSize;
+
+        float amplitude = 1;
+        float frequency = 1;
+        float noiseHeight = 0;
 
         for (int x = 0; x < heightMapSize; x++)
         {
@@ -157,10 +161,14 @@ public class MapGen : MonoBehaviour
             {
                 for (int i = 0; i < octaves; i++)
                 {
-                    float worldPosX = (x + tileX * (heightMapSize - 1) * ratio);
-                    float worldPosZ = (z + tileZ * (heightMapSize - 1) * ratio);
+                    float worldPosX = (x + tileX * (heightMapSize - 1) * ratio * frequency);
+                    float worldPosZ = (z + tileZ * (heightMapSize - 1) * ratio * frequency);
 
-                    htMap[z, x] = Mathf.PerlinNoise(worldPosX / scale + seed, worldPosZ / scale + seed);
+                    float perlinValue = Mathf.PerlinNoise(worldPosX / scale + seed, worldPosZ / scale + seed);
+
+                    noiseHeight += perlinValue * amplitude;
+                    
+                    
                     Color color = CalculateColor(x, z);
                     HeightMapTexture.SetPixel((int)worldPosX, (int)worldPosZ, color);
                 }
