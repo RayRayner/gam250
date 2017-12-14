@@ -35,6 +35,11 @@ public class MapGen : MonoBehaviour
     public float ScaleMax;
 
     public int octaves = 10;
+    public float persistance;
+    public float lacunarity;
+
+    float maxNoiseHeight = float.MinValue;
+    float minNoiseHeight = float.MaxValue;
 
     //Prototypes
     SplatPrototype[] splats;
@@ -109,19 +114,19 @@ public class MapGen : MonoBehaviour
 
     void ImageToFloat (float[,] imgMap, int tileX, int tileZ)
     {
+          
+          PredefinedMap.filterMode = FilterMode.Point;
+               
+        
 
-        //  PredefinedMap.filterMode = FilterMode.Point;
-   //     PredefinedMap.width = heightMapSize;
-     //   PredefinedMap.height = heightMapSize;
         for (int x = 0; x < PredefinedMap.width; x++)
         {
             for (int z = 0; z < PredefinedMap.height; z++)
             {
-                PredefinedMap.filterMode = FilterMode.Point;
-                var Colour = PredefinedMap.GetPixels( z, x, PredefinedMap.width, PredefinedMap.height);
-                imgMap[z, x] = Colour[x + z].grayscale;
+                imgMap[x, z] = PredefinedMap.GetPixel(x, z).grayscale;
             }
         }
+        
         print("Finished Image Map");
     }
 
@@ -167,13 +172,29 @@ public class MapGen : MonoBehaviour
                     float perlinValue = Mathf.PerlinNoise(worldPosX / scale + seed, worldPosZ / scale + seed);
 
                     noiseHeight += perlinValue * amplitude;
-                    
+
+                    amplitude *= persistance;
+                    frequency *= lacunarity;
                     
                     Color color = CalculateColor(x, z);
                     HeightMapTexture.SetPixel((int)worldPosX, (int)worldPosZ, color);
                 }
+
+                if (noiseHeight > maxNoiseHeight)
+                {
+                    maxNoiseHeight = noiseHeight;
+                }
+                else if (noiseHeight < minNoiseHeight)
+                {
+                    minNoiseHeight = noiseHeight;
+                }
+
+                htMap[x, z] = HeightMapTexture.GetPixel(x, z).grayscale;
+
             }
         }
+
+       
         HeightMapTexture.Apply();
         Debug.Log("Heights Done");
     }
@@ -223,19 +244,6 @@ public class MapGen : MonoBehaviour
         //		print (sample);
         return new Color(sample, sample, sample);
     }
-
-    public void FindDifference(float[,] height, float[,] other)
-    {
-        for (int x = 0; x < height.Length; x++)
-        {
-            for (int z = 0; z < height.Length; z++)
-            {
-                //FinalMap[x, z] = height[x, z] - other[x, z];
-            }
-        }
-        //Debug.Log(height[2,2] - other[2,2]);
-    }
-
     //Runs at the start
     private void Start()
     {
@@ -264,9 +272,9 @@ public class MapGen : MonoBehaviour
             for (int z = 0; z < tileZ; z++)
             {
 
-                FillHeights(htMap, x, z, octaves);
+                FillHeights(htMap, x, z, octaves, persistance, lacunarity);
                 BiomeMap(bmMap, x, z);
-               // ImageToFloat(imageMap, x, z);
+                ImageToFloat(imageMap, x, z);
   //              FindDifference(htMap, bmMap);
 
                 TerrainData tData = new TerrainData();
@@ -275,12 +283,12 @@ public class MapGen : MonoBehaviour
                 tData.name = "PCGTerrainData";
                 if (toolModeInt == 1)
                 {
-                  //  tData.SetHeights(0, 0,imageMap);
-                  //  Debug.Log("Tool Mode Int = " + toolModeInt);
+                    tData.SetHeights(0, 0,imageMap);
+                    Debug.Log("Tool Mode Int = " + toolModeInt);
                 }
                 else
                 {
-                //    Debug.Log("Tool Mode Int = " + toolModeInt);
+                    Debug.Log("Tool Mode Int = " + toolModeInt);
                     tData.SetHeights(0, 0, htMap);
                 }
 

@@ -68,6 +68,16 @@ namespace GUIFunctionality
                             mappy.octaves = EditorGUILayout.IntSlider(mappy.octaves, 0, 100);
                             EditorGUILayout.EndHorizontal();
 
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel("Lacunarity");
+                            mappy.lacunarity = EditorGUILayout.FloatField(mappy.lacunarity);
+                            EditorGUILayout.EndHorizontal();
+
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.PrefixLabel("Persistance");
+                            mappy.persistance = EditorGUILayout.FloatField(mappy.persistance);
+                            EditorGUILayout.EndHorizontal();
+
 
                             EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
