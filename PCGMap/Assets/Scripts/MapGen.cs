@@ -35,8 +35,8 @@ public class MapGen : MonoBehaviour
     public float ScaleMax;
 
     public int octaves = 10;
-    public float persistance;
-    public float lacunarity;
+    public float persistance = 0.5f;
+    public float lacunarity = 2f;
 
     float maxNoiseHeight = float.MinValue;
     float minNoiseHeight = float.MaxValue;
@@ -87,7 +87,6 @@ public class MapGen : MonoBehaviour
         splats[1].texture = splat1;
         splats[1].tileSize = new Vector2(splat1Size, splat1Size);
 
-        Debug.Log("Splats Made");
 
         details = new DetailPrototype[3];
 
@@ -109,16 +108,13 @@ public class MapGen : MonoBehaviour
         details[2].healthyColor = Color.green;
         details[2].dryColor = Color.grey;
 
-        Debug.Log("Details Made");
     }
 
     void ImageToFloat (float[,] imgMap, int tileX, int tileZ)
     {
-          
-          PredefinedMap.filterMode = FilterMode.Point;
-               
-        
-
+        PredefinedMap.filterMode = FilterMode.Point;
+        //PredefinedMap.Resize(512, 512);
+      
         for (int x = 0; x < PredefinedMap.width; x++)
         {
             for (int z = 0; z < PredefinedMap.height; z++)
@@ -126,29 +122,6 @@ public class MapGen : MonoBehaviour
                 imgMap[x, z] = PredefinedMap.GetPixel(x, z).grayscale;
             }
         }
-        
-        print("Finished Image Map");
-    }
-
-    void BiomeMap (float[,] htMap2, int tileX, int tileZ)
-    {
-        BiomeMapTexture = new Texture2D(heightMapSize, heightMapSize);
-        float ratio = (float)terrainSize / (float)heightMapSize;
-
-        for (int x = 0; x < heightMapSize; x++)
-        {
-            for (int z = 0; z < heightMapSize; z++)
-            {
-                float worldPosX2 = (x + tileX * (heightMapSize - 1) * ratio);
-                float worldPosZ2 = (z + tileZ * (heightMapSize - 1) * ratio);
-
-                htMap2[z, x] = Mathf.PerlinNoise(worldPosX2 / scale + seed, worldPosZ2 / scale + seed);
-                Color color = CalculateColor2((int)worldPosX2, (int)worldPosZ2);
-                BiomeMapTexture.SetPixel((int)worldPosX2, (int)worldPosZ2, color);
-            }
-        }
-        BiomeMapTexture.Apply();
-        Debug.Log("Heights 2 Done");
     }
 
     void FillHeights(float[,] htMap, int tileX, int tileZ, int octaves, float persistance, float lacunarity)
@@ -196,7 +169,6 @@ public class MapGen : MonoBehaviour
 
        
         HeightMapTexture.Apply();
-        Debug.Log("Heights Done");
     }
 
     void FillAlphaMap(TerrainData terrainData)
@@ -221,8 +193,6 @@ public class MapGen : MonoBehaviour
 
         terrainData.alphamapResolution = alphaMapSize;
         terrainData.SetAlphamaps(0, 0, map);
-
-        Debug.Log("Alpha Map Done");
     }
 
     Color CalculateColor(int x, int y)
@@ -231,19 +201,9 @@ public class MapGen : MonoBehaviour
         float xCoord = (float)x / heightMapSize * scale + seed;
         float yCoord = (float)y / heightMapSize * scale + seed;
         float sample = Mathf.PerlinNoise(xCoord, yCoord);
-        //		print (sample);
         return new Color(sample, sample, sample);
     }
 
-    Color CalculateColor2(int x, int y)
-    {
-
-        float xCoord = (float)x / heightMapSize * scale + seed;
-        float yCoord = (float)y / heightMapSize * scale + seed;
-        float sample = Mathf.PerlinNoise(xCoord, yCoord);
-        //		print (sample);
-        return new Color(sample, sample, sample);
-    }
     //Runs at the start
     private void Start()
     {
@@ -255,17 +215,11 @@ public class MapGen : MonoBehaviour
 
         heightMapSize = Mathf.ClosestPowerOfTwo(heightMapSize) + 1;
         float[,] htMap = new float[heightMapSize, heightMapSize];
-        float[,] bmMap = new float[heightMapSize, heightMapSize];
-//        float[,] fnlMap = new float[heightMapSize, heightMapSize];
          float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
-        //float[,] imageMap = new float[heightMapSize, heightMapSize];
 
         Ter = new Terrain[tileX, tileZ];
 
         Prototypes();
-
-
-        Debug.Log("Beginning Start loop");
 
         for (int x = 0; x < tileX; x++)
         {
@@ -273,7 +227,6 @@ public class MapGen : MonoBehaviour
             {
 
                 FillHeights(htMap, x, z, octaves, persistance, lacunarity);
-                BiomeMap(bmMap, x, z);
                 ImageToFloat(imageMap, x, z);
   //              FindDifference(htMap, bmMap);
 
@@ -284,11 +237,9 @@ public class MapGen : MonoBehaviour
                 if (toolModeInt == 1)
                 {
                     tData.SetHeights(0, 0,imageMap);
-                    Debug.Log("Tool Mode Int = " + toolModeInt);
                 }
                 else
                 {
-                    Debug.Log("Tool Mode Int = " + toolModeInt);
                     tData.SetHeights(0, 0, htMap);
                 }
 
@@ -302,7 +253,10 @@ public class MapGen : MonoBehaviour
                 Ter[x, z].castShadows = false;
                 Ter[x, z].transform.position = new Vector3(terrainSize * x + offset.x, 0, terrainSize * z + offset.y);
             }
-        }    
+        }
+
+       // cam.SetActive(true);
+
     }
 
 }

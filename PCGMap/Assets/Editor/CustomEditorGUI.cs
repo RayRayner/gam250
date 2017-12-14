@@ -103,13 +103,7 @@ namespace GUIFunctionality
                             break;
 
                         case 1:
-                            /*
-                            Texture2D myTexture = AssetPreview.GetAssetPreview(mappy.splat0);
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Splat 0");
-                            GUILayout.Label(myTexture);
-                            */
-
+                           
                             EditorGUILayout.BeginHorizontal();
                             mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
