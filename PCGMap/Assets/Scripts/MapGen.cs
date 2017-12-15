@@ -71,7 +71,9 @@ public class MapGen : MonoBehaviour
     //Saving the perlin noise map
     public void SaveTexture()
     {
-        AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/" + System.DateTime.Now.ToFileTime() + ".asset");
+        System.DateTime dateTime = System.DateTime.Now;
+
+        AssetDatabase.CreateAsset(HeightMapTexture, "Assets/Temp/Terriain" + System.DateTime.Now.Day.ToString()+System.DateTime.Now.Month.ToString()+System.DateTime.Now.Year.ToString()+System.DateTime.Now.Millisecond.ToString()+ ".asset");
         AssetDatabase.SaveAssets();        
     }
     //Creating various prototypes (needed)
@@ -215,7 +217,7 @@ public class MapGen : MonoBehaviour
 
         heightMapSize = Mathf.ClosestPowerOfTwo(heightMapSize) + 1;
         float[,] htMap = new float[heightMapSize, heightMapSize];
-         float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
+        float[,] imageMap = new float[PredefinedMap.height, PredefinedMap.width];
 
         Ter = new Terrain[tileX, tileZ];
 

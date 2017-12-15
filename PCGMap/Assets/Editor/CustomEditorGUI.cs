@@ -10,12 +10,77 @@ namespace GUIFunctionality
     {
         float MinLimit = 0;
         float MaxLimit = 200;
+        MapGen mappy;
+
+        const int VARIABLES_TAB = 0;
+        const int TEXTURES_TAB = 1;
+
+        public void DisplayVariables()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Max Height");
+            mappy.MaxHeight = EditorGUILayout.Slider(mappy.MaxHeight, 0f, 100f);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Scale is Random between " + Mathf.FloorToInt(mappy.ScaleMin) + " and " + Mathf.FloorToInt(mappy.ScaleMax) + " (Roughly)");
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.MinMaxSlider(ref mappy.ScaleMin, ref mappy.ScaleMax, MinLimit, MaxLimit);
+            EditorGUILayout.EndHorizontal();
+
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(new GUIContent("Seed", "If this is Zero, seed will be random"));
+            mappy.seed = EditorGUILayout.IntField(mappy.seed);
+            EditorGUILayout.EndHorizontal();
+
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Octaves");
+            mappy.octaves = EditorGUILayout.IntSlider(mappy.octaves, 0, 100);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Lacunarity");
+            mappy.lacunarity = EditorGUILayout.FloatField(mappy.lacunarity);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Persistance");
+            mappy.persistance = EditorGUILayout.FloatField(mappy.persistance);
+            EditorGUILayout.EndHorizontal();
+
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
+            mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Amount of tiles (Z Axis)");
+            mappy.tileZ = EditorGUILayout.IntField(mappy.tileZ);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
+            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 513);
+            EditorGUILayout.EndHorizontal();
+
+
+            /*
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Temp");
+            EditorGUILayout.EndHorizontal();
+            */
+        }
 
         public override void OnInspectorGUI()
         {
 
             serializedObject.Update();
-            MapGen mappy = target as MapGen;
+            mappy = target as MapGen;
             EditorGUILayout.BeginVertical();
 
             //Toolbar
@@ -42,67 +107,11 @@ namespace GUIFunctionality
                     switch (mappy.optionsInt)
                     {
 
-                        case 0:
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Max Height");
-                            mappy.MaxHeight = EditorGUILayout.Slider(mappy.MaxHeight, 0f, 100f);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField("Scale is Random between " + Mathf.FloorToInt(mappy.ScaleMin) + " and " + Mathf.FloorToInt(mappy.ScaleMax) + " (Roughly)");
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.MinMaxSlider(ref mappy.ScaleMin, ref mappy.ScaleMax, MinLimit, MaxLimit);
-                            EditorGUILayout.EndHorizontal();
-
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel(new GUIContent("Seed", "If this is Zero, seed will be random"));
-                            mappy.seed = EditorGUILayout.IntField(mappy.seed);
-                            EditorGUILayout.EndHorizontal();
-
-                            
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Octaves");
-                            mappy.octaves = EditorGUILayout.IntSlider(mappy.octaves, 0, 100);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Lacunarity");
-                            mappy.lacunarity = EditorGUILayout.FloatField(mappy.lacunarity);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Persistance");
-                            mappy.persistance = EditorGUILayout.FloatField(mappy.persistance);
-                            EditorGUILayout.EndHorizontal();
-
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
-                            mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Amount of tiles (Z Axis)");
-                            mappy.tileZ = EditorGUILayout.IntField(mappy.tileZ);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
-                            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 513);
-                            EditorGUILayout.EndHorizontal();
-
-
-                            /*
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Temp");
-                            EditorGUILayout.EndHorizontal();
-                            */
+                        case VARIABLES_TAB:
+                            DisplayVariables();
                             break;
 
-                        case 1:
+                        case TEXTURES_TAB:
                            
                             EditorGUILayout.BeginHorizontal();
                             mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
