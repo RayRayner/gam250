@@ -14,6 +14,12 @@ namespace GUIFunctionality
 
         const int VARIABLES_TAB = 0;
         const int TEXTURES_TAB = 1;
+        const int DEBUG_TAB = 2;
+        const int FOURTH_OPTION = 3;
+
+        const int PICTURE_VARIABLES_TAB = 0;
+        const int PICTURE_TEXTURES_TAB = 1;
+        const int PICTURE_PREDEFINED_MAP = 2;
 
         public void DisplayVariables()
         {
@@ -76,6 +82,77 @@ namespace GUIFunctionality
             */
         }
 
+        public void DisplayTextures ()
+        {
+            EditorGUILayout.BeginHorizontal();
+            mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.splat1 = (Texture2D)EditorGUILayout.ObjectField("Splat 1", mappy.splat1, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.detail0 = (Texture2D)EditorGUILayout.ObjectField("Detail 0", mappy.detail0, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.detail1 = (Texture2D)EditorGUILayout.ObjectField("Detail 1", mappy.detail1, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.detail2 = (Texture2D)EditorGUILayout.ObjectField("Detail 2", mappy.detail2, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+        }
+
+        public void PictureDisplayVariables()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Max Height");
+            mappy.MaxHeight = EditorGUILayout.Slider(mappy.MaxHeight, 0f, 100f);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
+            mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Amount of tiles (Z Axis)");
+            mappy.tileZ = EditorGUILayout.IntField(mappy.tileZ);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
+            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 512);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        public void PictureDisplayTextures ()
+        {
+            EditorGUILayout.BeginHorizontal();
+            mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.splat1 = (Texture2D)EditorGUILayout.ObjectField("Splat 1", mappy.splat1, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.detail0 = (Texture2D)EditorGUILayout.ObjectField("Detail 0", mappy.detail0, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.detail1 = (Texture2D)EditorGUILayout.ObjectField("Detail 1", mappy.detail1, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            mappy.detail2 = (Texture2D)EditorGUILayout.ObjectField("Detail 2", mappy.detail2, typeof(Texture2D), false);
+            EditorGUILayout.EndHorizontal();
+
+        }
+
         public override void OnInspectorGUI()
         {
 
@@ -112,35 +189,14 @@ namespace GUIFunctionality
                             break;
 
                         case TEXTURES_TAB:
-                           
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
+                            DisplayTextures();                            
+                            break;
 
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.splat1 = (Texture2D)EditorGUILayout.ObjectField("Splat 1", mappy.splat1, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.detail0 = (Texture2D)EditorGUILayout.ObjectField("Detail 0", mappy.detail0, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.detail1 = (Texture2D)EditorGUILayout.ObjectField("Detail 1", mappy.detail1, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.detail2 = (Texture2D)EditorGUILayout.ObjectField("Detail 2", mappy.detail2, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
+                        case DEBUG_TAB:
 
                             break;
 
-                        case 2:
-
-
-                            break;
-
-                        case 3:
+                        case FOURTH_OPTION:
 
                             EditorGUILayout.BeginHorizontal();
                             if (GUILayout.Button("Save Current Map"))
@@ -166,55 +222,15 @@ namespace GUIFunctionality
 
                     switch (mappy.pictureInt)
                     {
-                        case 0:
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Max Height");
-                            mappy.MaxHeight = EditorGUILayout.Slider(mappy.MaxHeight, 0f, 100f);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Amount of tiles (X Axis)");
-                            mappy.tileX = EditorGUILayout.IntField(mappy.tileX);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel("Amount of tiles (Z Axis)");
-                            mappy.tileZ = EditorGUILayout.IntField(mappy.tileZ);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.PrefixLabel(new GUIContent("Terrain Size", "The size of each individual terrain piece"));
-                            mappy.terrainSize = EditorGUILayout.IntSlider(mappy.terrainSize, 0, 512);
-                            EditorGUILayout.EndHorizontal();
-
+                        case PICTURE_VARIABLES_TAB:
+                            PictureDisplayVariables();
                             break;
 
-                        case 1:
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.splat0 = (Texture2D)EditorGUILayout.ObjectField("Splat 0", mappy.splat0, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.splat1 = (Texture2D)EditorGUILayout.ObjectField("Splat 1", mappy.splat1, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.detail0 = (Texture2D)EditorGUILayout.ObjectField("Detail 0", mappy.detail0, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.detail1 = (Texture2D)EditorGUILayout.ObjectField("Detail 1", mappy.detail1, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
-                            EditorGUILayout.BeginHorizontal();
-                            mappy.detail2 = (Texture2D)EditorGUILayout.ObjectField("Detail 2", mappy.detail2, typeof(Texture2D), false);
-                            EditorGUILayout.EndHorizontal();
-
+                        case PICTURE_TEXTURES_TAB:
+                            PictureDisplayTextures();
                             break;
 
-                        case 2:
+                        case PICTURE_PREDEFINED_MAP:
                             EditorGUILayout.BeginHorizontal();
                             mappy.PredefinedMap = (Texture2D)EditorGUILayout.ObjectField("Map To Use", mappy.PredefinedMap, typeof(Texture2D), false);
                             EditorGUILayout.EndHorizontal();
